@@ -13,7 +13,8 @@ def softmax(Z: np.array) -> np.array:
     :param Z: 2D array, shape (N, C)
     :return: softmax 2D array, shape (N, C)
     """
-    return Z
+    exp_Z = np.exp(Z)
+    return exp_Z / exp_Z.sum(axis=1, keepdims=True)
 
 
 def softmax_loss_and_grad(W: np.array, X: np.array, y: np.array, reg: float) -> tuple:
@@ -29,18 +30,24 @@ def softmax_loss_and_grad(W: np.array, X: np.array, y: np.array, reg: float) -> 
     """
     loss = 0.0
     dL_dW = np.zeros_like(W)
-    # *****START OF YOUR CODE*****
-    # 1. Forward pass, compute loss as sum of data loss and regularization loss [sum(W ** 2)]
 
-    # 2. Backward pass, compute intermediate dL/dZ
+    N = X.shape[0]
+    C = W.shape[1]
 
-    # 3. Compute data gradient dL/dW
+    # Forward pass
+    Z = X.dot(W)
+    exp_Z = np.exp(Z)
+    softmax_Z = exp_Z / np.sum(exp_Z, axis=1, keepdims=True)
+    data_loss = -np.log(softmax_Z[range(N), y])
 
-    # 4. Compute regularization gradient
+    loss = np.mean(data_loss) + reg * np.sum(W ** 2)
 
-    # 5. Return loss and sum of data + reg gradients
+    # Backward pass
+    dL_dZ = softmax_Z
+    dL_dZ[range(N), y] -= 1
+    dL_dZ /= N
 
-    # *****END OF YOUR CODE*****
+    dL_dW = X.T.dot(dL_dZ) + 2 * reg * W
 
     return loss, dL_dW
 
@@ -88,7 +95,9 @@ class SoftmaxClassifier:
             # replacement is faster than sampling without replacement.              #
             #########################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+            batch_indices = np.random.choice(num_train, batch_size)
+            X_batch = X[batch_indices]
+            y_batch = y[batch_indices]
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
             # evaluate loss and gradient
@@ -100,6 +109,7 @@ class SoftmaxClassifier:
             # TODO 4:                                                               #
             # Update the weights using the gradient and the learning rate.          #
             #########################################################################
+            self.W -= grad * learning_rate
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
@@ -133,10 +143,10 @@ def train():
     # weights images must look like in lecture slides
 
     # ***** START OF YOUR CODE *****
-    learning_rate = 0
-    reg = 0
-    num_iters = 0
-    batch_size = 0
+    learning_rate = 0.001
+    reg = 0.01
+    num_iters = 100000
+    batch_size = 32
     # ******* END OF YOUR CODE ************
 
     (x_train, y_train), (x_test, y_test) = get_preprocessed_data()
@@ -165,7 +175,7 @@ Test accuracy: {cls.evaluate(x_test, y_test)}
 
     print(report)
 
-    out_dir = 'output/seminar2'
+    out_dir = 'C:/Users/Администратор/PycharmProjects/neuralnets/output/seminar2'
     report_path = os.path.join(out_dir, 'report.md')
     with open(report_path, 'w') as f:
         f.write(report)
