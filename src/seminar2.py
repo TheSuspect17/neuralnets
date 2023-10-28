@@ -40,7 +40,7 @@ def softmax_loss_and_grad(W: np.array, X: np.array, y: np.array, reg: float) -> 
     softmax_Z = exp_Z / np.sum(exp_Z, axis=1, keepdims=True)
     data_loss = -np.log(softmax_Z[range(N), y])
 
-    loss = np.mean(data_loss) + np.sum(W ** 2)
+    loss = np.mean(data_loss) + reg * np.sum(W ** 2)
 
     # Backward pass
     dL_dZ = softmax_Z
@@ -175,7 +175,7 @@ Test accuracy: {cls.evaluate(x_test, y_test)}
 
     print(report)
 
-    out_dir = 'C:/Users/Администратор/PycharmProjects/neuralnets/output/seminar2'
+    out_dir = '../output/seminar2'
     report_path = os.path.join(out_dir, 'report.md')
     with open(report_path, 'w') as f:
         f.write(report)
