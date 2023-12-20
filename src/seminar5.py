@@ -19,6 +19,7 @@ def build_conv_layer() -> tf.keras.layers.Conv2D:
 
     return my_layer
 
+
 def build_padded_conv_layer(kernel_size) -> tf.keras.layers.Conv2D:
     """
     Build Conv2D layer with some filters and paddings
@@ -85,7 +86,7 @@ def build_conv_model():
     return model
 
 
-def train(net='D:/models/my_conv_net'):
+def train(net='models\my_conv_net'):
     model = build_conv_model()
     model.compile(optimizer=tf.keras.optimizers.Adam(),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -114,6 +115,7 @@ def draw_weights(net_path):
 if __name__ == '__main__':
     import numpy as np
     import matplotlib.pyplot as plt
-    NET_PATH = 'D:/models/my_conv_net'
+
+    NET_PATH = 'models\my_conv_net'
     train(NET_PATH)
     draw_weights(NET_PATH)
