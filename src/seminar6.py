@@ -117,7 +117,7 @@ def upload():
     print('Upload model')
     zip_model_path = PATH_TO_MODEL+'.zip'
     shutil.make_archive(base_name=PATH_TO_MODEL,
-                        format='zip',
+                        format='zip',   
                         root_dir=PATH_TO_MODEL)
 
     config = dotenv.dotenv_values('.env')

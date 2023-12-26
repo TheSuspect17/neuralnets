@@ -11,7 +11,7 @@ import tensorflow as tf
 
 from seminar6 import PATH_TO_DATA, YOUR_GIT_USER
 
-PATH_TO_LOCAL_MODEL = 'models/model_6'
+PATH_TO_LOCAL_MODEL = 'models/model_6.zip'
 PATH_TO_S3_MODEL = 'models/model_6_s3'
 
 
