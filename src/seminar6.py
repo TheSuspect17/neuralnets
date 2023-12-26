@@ -17,13 +17,13 @@ PATH_TO_DATA = 'data/raw/cats_dogs_train'
 PATH_TO_MODEL = 'models/model_6'
 BUCKET_NAME = 'neuralnets2023'
 # todo fix your git user name and copy .env to project root
-YOUR_GIT_USER = 'Kizyakov-Dmitriy'
+YOUR_GIT_USER = 'eeeelzvt'
 
 
 def download_data():
     """Pipeline: download and extract data"""
     if not os.path.exists(PATH_TO_DATA_ZIP):
-        print('Downloading data...')
+        print('Downloading data....')
         urlretrieve(DATA_URL, PATH_TO_DATA_ZIP)
     else:
         print('Data is already downloaded!')
@@ -85,14 +85,6 @@ def train():
     """Pipeline: Build, train and save model to models/model_6"""
     # Todo: Copy some code from seminar5 and https://keras.io/examples/vision/image_classification_from_scratch/
     print('Training model')
-    model = make_model()
-    model.fit(
-        train_ds,
-        epochs=epochs,
-        validation_data=val_ds,
-    )
-    model.save(PATH_TO_MODEL)
-
     image_size = (180, 180)
     batch_size = 128
 
